@@ -1,1 +1,15 @@
-GET http://localhost:3000/data
+POST http://localhost:3000/data
+Content-Type: application/json
+
+{
+    "weekday":"Monday"
+}
+
+###
+POST http://localhost:3000/post
+Content-Type: application/json
+
+{
+    "value": "GAY",
+    "weekday": "Sunday"
+}

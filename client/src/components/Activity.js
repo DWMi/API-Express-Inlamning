@@ -1,44 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 
-const Activity = ({ week, setActivityId, activityId, setActivity, activity, setSelectedDay, selectedDay }) => {
+const Activity = ({ week, setActivityId, activityId, setActivity, activity, setSelectedDay, selectedDay, setUpdateActivity, updateActivity, postActivity, putActivity, fetchIds, weekId, deleteActivity }) => {
 
-  useEffect(() => {
-    console.log(activityId);
-  }, [activityId])
 
-  const postActivity = () => {
-    fetch("http://localhost:3000/post", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      }, 
-      body: JSON.stringify({
-        value: activity,
-        weekday: selectedDay,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  };
+
+
+
+
+  const findSpecificActivity = () => {
+    return activityId ? week.find(el => el.id === weekId).activities.find(element => element.id === activityId).activity : ""
+  }
 
   return (
     <div>
-   
+
     {/* PUT */}
       {activityId ? (
-        <input placeholder={activityId ? week.find((el) => el.id === activityId).activities : ""}/>
+        <input onChange={e =>setUpdateActivity(e.target.value)} placeholder={findSpecificActivity()}/>
       ) : (
-        <input disabled placeholder="Please select an activity" />
+        <input disabled placeholder="Please select an activity to update" />
       )}
-
+        <button onClick={putActivity}>PUT</button>
+        <button onClick={deleteActivity}>DELETE</button>
 
       {/*POST */}
       <input placeholder="POST" onChange={(e) => setActivity(e.target.value)} />
-      <label htmlFor="cars">Weekday:</label>
-        <select defaultValue={"Monday"} name="weekday" id="weekday" onChange={(e) => setSelectedDay(e.target.value)}>
+      <label htmlFor="weekday">Weekday:</label>
+        <select name="weekday" id="weekday" onChange={(e) => setSelectedDay(e.target.value)}>
           {
-           week && week.map(item => {
+            week && week.map(item => {
               return <option key={item.id} value={item.weekday}>{item.weekday}</option>
             })
           }
@@ -54,29 +45,26 @@ const Activity = ({ week, setActivityId, activityId, setActivity, activity, setS
           </tr>
         </thead>
         <tbody>
-           <tr>
+          <tr>
             {week &&
               week.map((item) => {
                 return (
-         
+      
                   <td key={item.id} style={{fontSize: '11px'}}>
                         {item.activities.map(itemB => {
                           return (
-                            
-                            
-                      
-                            <p onClick={() => setActivityId(item.id)} style={{border:'1px solid black', padding:'10px'}} key={itemB.key}>{itemB.activity}</p>
+                            <p onClick={() => fetchIds(item.id, itemB.id)} style={{border:'1px solid white', padding:'10px'}} key={itemB.id}>{itemB.activity}</p>
                             
                             
                             )
                         })}
 
-                       </td>  
+                      </td>  
               
                   
                 );
               })}
-              </tr>
+          </tr>
  
         </tbody>
       </Table>
