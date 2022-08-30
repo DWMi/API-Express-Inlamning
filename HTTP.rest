@@ -1,15 +1,15 @@
-POST http://localhost:3000/data
-Content-Type: application/json
+GET http://localhost:3000/multiple
+###
 
-{
-    "weekday":"Monday"
-}
-
+GET http://localhost:3000/data/Monday
 ###
 POST http://localhost:3000/post
 Content-Type: application/json
 
 {
-    "value": "GAY",
-    "weekday": "Sunday"
+    "value": "TEST",
+    "weekday": "Tuesday"
 }
+
+###
+DELETE http://localhost:3000/delete/zJQas4Bd9xJNDy5UvzE2N

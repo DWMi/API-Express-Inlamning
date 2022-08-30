@@ -51,30 +51,10 @@ let week = [
 let dataApi;
 let dataApi2 = [];
 
-const fetchData = (weekday) => {
-
-
-     axios.get('http://www.boredapi.com/api/activity')
-            .then(response => {
-                if(response) {
-                    dataApi = response.data
-                }
-                pushData(weekday)
-
-                }
-            )
-            .catch(function (error) {
-                    console.log(error);
-                    if (dataApi) {
-                        pushData(weekday)
-                    }
-                })
-                     
-}
 
 const pushData = (value) => {
     const dayId = week.findIndex(element => element.weekday === value)
-               
+
 
     week[dayId].activities.push({
         activity: dataApi.activity,
@@ -88,83 +68,65 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static("client"))
 
-// app.get('/http', (req, res) => {
-//     const url = "http://www.boredapi.com/api/activity"
 
-//     http.get(url, (response) => {
-//         let data = ''
-        
-//         response.on("data", chunk => {
-//             data = data + chunk.toString()
-//         })
 
-//         response.on("end", () => {
-//             const body = JSON.parse(data)
-//             console.log(data);
-//         })
-//     })
-// })
 
-/* ANVÄND DETTA ISTÄLLET*/
 app.get('/weekdays', (req, res) => {
     
     return res.send(week)
 })
 
 
-/* DETTA SKALL BARA RETURNERA 'SUCCESS' POST ?*/ 
-app.post('/data', (req, res) => {
-    const { weekday } = req.body
- 
-        fetchData(weekday)
-   
-    return res.json(week)
-    // return res.json('SUCCESS')
+
+app.get('/data/:value', (req, res) => {
+
+    const randomDataIndex = Math.floor(Math.random() * dataApi2.length);
+    const findWeekdayIndex = week.findIndex(el => el.weekday === req.params.value)
+
+    week[findWeekdayIndex].activities.push({activity: dataApi2[randomDataIndex].activity, id: nanoid()})
+        res.json(week)
+
 })
 
 app.put('/update', (req, res) => {
     const { newActivity, activityId, weekId } = req.body
 
     week.find(element =>element.id === weekId).activities.find(el => el.id === activityId).activity =  newActivity
-    console.log(week);
+    res.json(week)
 })
 
-
+//bug
 app.get('/multiple', (req, res) => {
-    week.map((item) => { 
-        axios.get('http://www.boredapi.com/api/activity')
-        .then(response => {
-            if(response) { 
+    week.map( () => { 
+        return getApiRequest()
+    })
+    
+    setTimeout(() => {
+        loopSaveMultipleData()
+        res.json(week)
+        }, 500)
+
+})
+
+const getApiRequest =  async () => {
+        const response = await axios.get('http://www.boredapi.com/api/activity')
+            if (response) {
                 dataApi2.push({
                     activity: response.data.activity,
                     id: nanoid()
                 })
             }
-            console.log(dataApi2);
-            }
-        )
-        .catch(function (error) {
-                console.log(error);
-            })
-    })
-    loopSaveMultipleData()
-})
+
+}
 
 
-//FIXAAAAAA
 const loopSaveMultipleData = () => {
-    if(dataApi2.length > 0) {
-        week.map((item, index) => {
-            
+        week.map((item, index) => { 
             return item.activities.splice(0, item.activities.length,{
                 activity: dataApi2[index]?.activity,
                 id: nanoid()
             })
-            
-            
-         })
-    }
-
+        })
 }
 
 app.post('/post', (req, res) => {
@@ -174,21 +136,29 @@ app.post('/post', (req, res) => {
         id: nanoid(),
         activity: value
     })
-  
-    return res.json(req.body)
+
+    res.json(week)
 })
+
+
 
 app.delete('/delete/:id', (req, res)=>{
 
+    try {
+    //finds weekday id
+    const weekdayId = week.find(el => el.activities.find(e => e.id === req.params.id)).id
+    const weekdayIndex = week.findIndex(el => el.id === weekdayId)
+    //finds weekday's activity id
+    const activityIndex = week.find(el => el.id === weekdayId).activities.findIndex(e => e.id === req.params.id)
 
+    week[weekdayIndex].activities.splice(activityIndex, 1)
+
+    res.json(week)
+    }catch(err) {
+        res.status(404).json(err.message)
+    }
     
-    const weekdayId = week.find(el => el.activities.find(e => e.id === req.params.id))
-    const activityIndex = week.find(el => el.activities).activities.findIndex(e => e.id === req.params.id)
-
-    console.log(activities2);
-
 })
 
 app.listen(port, () => console.log("App is running on port " + port))
 
-/* SKAPA EN TILL KNAPPFAN OCH DEN SKA BARA HÄMTA EN ÅT GÅNGEN*/

@@ -9,50 +9,48 @@ function App() {
   const [activity, setActivity] = useState('')
   const [activityId, setActivityId] = useState('')
   const [selectedDay, setSelectedDay] = useState('Monday')
-  const [specificActivity, setSpecificActivity] = useState('')
   const [updateActivity, setUpdateActivity] = useState('')
-
+  const [btnClicked, setBtnClicked] = useState(false)
+ 
   useEffect(() => {
     fetch('http://localhost:3000/weekdays')
     .then(res => res.json())
-    .then(res => setWeek(res))
-  }, [week])
+    .then(data => setWeek(data))
 
-  useEffect(() => console.log(updateActivity), [updateActivity])
+  }, [])
 
-  const fetchArr = async () => {
-    await fetch('http://localhost:3000/data', {
-      method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          weekday: selectedDay,
-        })
-    })
+
+
+  const getAct = async () => {
+    await fetch(`http://localhost:3000/data/${selectedDay}`)
     .then(res => res.json())
-    .then(res => setWeek(res))
+    .then(data => setWeek(data))
     }
 
     const getMultipleRequests = () => {
       fetch('http://localhost:3000/multiple')
-      .then(res => res.json)
-      .then(data => console.log(data))
+      .then(res => res.json())
+      .then(data => setWeek(data))
+
+      setBtnClicked(true)
     }
 
     const postActivity = () => {
+      if(activity.length > 1){
+
       fetch("http://localhost:3000/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        }, 
-        body: JSON.stringify({
-          value: activity,
-          weekday: selectedDay,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data));
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              }, 
+              body: JSON.stringify({
+                value: activity,
+                weekday: selectedDay,
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => setWeek(data));
+      }
     };
   
     const putActivity = () => {
@@ -68,7 +66,8 @@ function App() {
         })
       })
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => setWeek(data))
+      setUpdateActivity('')
     }
   
 
@@ -78,7 +77,8 @@ function App() {
         method:'delete'
       })
       .then(res=>res.json())
-      .then(data => console.log('yes'))
+      .then(data => setWeek(data))
+      setActivityId('')
     }
 
     const fetchIds = (weekId, activityId) => {
@@ -88,23 +88,21 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-      <h1>Calendar</h1>
+      <header className="App-header">  </header>
+      <h1>Random Activities Generator</h1>
       <Activity 
         week={week}
         // id 
-        setActivityId={setActivityId} 
         activityId={activityId}
         //value 
         activity={activity} 
         setActivity={setActivity}
         //select day
-        selectedDay={selectedDay}
         setSelectedDay={setSelectedDay}
         //requests
         putActivity={putActivity}
         postActivity={postActivity}
-        //functions
+
         updateActivity={updateActivity}
         setUpdateActivity={setUpdateActivity}
         fetchIds={fetchIds}
@@ -112,11 +110,12 @@ function App() {
         deleteActivity={deleteActivity}
 
       />
-  
-
-      <button className="getBtn" onClick={fetchArr}>Get a random activity</button>
-      <button className="getBtn" onClick={getMultipleRequests}>Get multiple activities</button>
-      </header>
+      <button className="getBtn" onClick={getMultipleRequests}>Fetch activities</button>
+      {
+      btnClicked ? <button className="getBtn" onClick={getAct}>Fetch one activity</button> : <button disabled className="getBtn" onClick={getAct}>Fetch one activity</button>
+      }
+    
+      
     </div> 
   );
 }

@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Table from "react-bootstrap/Table";
 
-const Activity = ({ week, setActivityId, activityId, setActivity, activity, setSelectedDay, selectedDay, setUpdateActivity, updateActivity, postActivity, putActivity, fetchIds, weekId, deleteActivity }) => {
-
+const Activity = ({ week, activityId, setActivity, activity, setSelectedDay, setUpdateActivity, postActivity, putActivity, fetchIds, weekId, deleteActivity,updateActivity}) => {
 
 
 
 
 
   const findSpecificActivity = () => {
-    return activityId ? week.find(el => el.id === weekId).activities.find(element => element.id === activityId).activity : ""
+    return activityId && week ? week.find(el => el.id === weekId).activities.find(element => element.id === activityId)?.activity : ""
   }
 
   return (
@@ -17,15 +16,25 @@ const Activity = ({ week, setActivityId, activityId, setActivity, activity, setS
 
     {/* PUT */}
       {activityId ? (
-        <input onChange={e =>setUpdateActivity(e.target.value)} placeholder={findSpecificActivity()}/>
-      ) : (
-        <input disabled placeholder="Please select an activity to update" />
-      )}
+        <>
+        <input onChange={e =>setUpdateActivity(e.target.value)} placeholder={findSpecificActivity()} value={updateActivity}/>
+      
         <button onClick={putActivity}>PUT</button>
         <button onClick={deleteActivity}>DELETE</button>
+        </>
+      ) : (
+        <>
+        <input disabled size="lg" placeholder="Select an activity!" />
+        <button disabled onClick={putActivity}>PUT</button>
+        <button disabled onClick={deleteActivity}>DELETE</button>
+        </>
+      )}
+        
+      
 
       {/*POST */}
-      <input placeholder="POST" onChange={(e) => setActivity(e.target.value)} />
+      <input placeholder="Write an activity" onChange={(e) => setActivity(e.target.value)} />
+      {activity  ? <button onClick={() => postActivity()}>Post</button> : <button disabled onClick={() => postActivity()}>Post</button> }
       <label htmlFor="weekday">Weekday:</label>
         <select name="weekday" id="weekday" onChange={(e) => setSelectedDay(e.target.value)}>
           {
@@ -34,14 +43,15 @@ const Activity = ({ week, setActivityId, activityId, setActivity, activity, setS
             })
           }
         </select>
-      <button onClick={() => postActivity()}>Post</button>
+      
 
 
       <Table striped bordered hover variant="dark">
         <thead>
           <tr>
             {week &&
-              week.map((item) => <th key={item.id}>{item.weekday}</th>)}
+              week.map((item) => <th key={item.id}>{item.weekday}</th>)
+              }
           </tr>
         </thead>
         <tbody>
