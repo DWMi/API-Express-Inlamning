@@ -1,5 +1,5 @@
 # API-Express-Inlamning
-Titel: Random Activities Generator for bored people 
+Titel: Random Activities Generator for bored peoples
 
 Beskrivning:
 Kommunikation med Web-API’erI den här inlämningen skall du skapa en hemsida som visar information hämtat ifrån ert egenbyggda API.
@@ -17,18 +17,18 @@ Låt kreativiteten flöda! För att bli godkänd på den här uppgiften MÅSTE d
 Inlämningen sker som vanligt via It’s Learning där du ska zippa ihop din projektmapp. I projektmappen ska det finnas (utöver all kod) en README.md fil som innehåller en titel, beskrivning av uppgiften och vad som krävs för att bygga och starta projektet, samt en länk till GitHub repot. Notera att om instruktioner för hur projektet byggs och startas inte finns eller om instruktionerna är felaktiga kan uppgiften komma att bli underkänd.Läs noga igenom hela uppgiftsbeskrivningen innan du börjar.
 
 Krav för godkänt:
-1.Skapa ett API baserat på en valfri resurs (GET & POST)
-2.Samtliga endpoints skall kunna nås via en REST Client fil (.rest)
-3.Datan som API:et hanterar sparas lokalt i serverfilen
-4.Ett simpelt klient-gränssnitt skall finnas för att anropa ert API olika endpoints, samt visa upp resultatet vid GET anrop
-5.Ert API skall hämta och data ifrån ett externt API och skicka vidare datan till klienten 
-6.Git & GitHub har använts
-7.Projektmappen innehåller en README.md fil (läs ovan för mer info)
-8.Uppgiften lämnas in i tid!
+1.Skapa ett API baserat på en valfri resurs (GET & POST) ✅
+2.Samtliga endpoints skall kunna nås via en REST Client fil (.rest)✅
+3.Datan som API:et hanterar sparas lokalt i serverfilen✅
+4.Ett simpelt klient-gränssnitt skall finnas för att anropa ert API olika endpoints, samt visa upp resultatet vid GET anrop✅
+5.Ert API skall hämta och data ifrån ett externt API och skicka vidare datan till klienten ✅
+6.Git & GitHub har använts✅
+7.Projektmappen innehåller en README.md fil (läs ovan för mer info)✅
+8.Uppgiften lämnas in i tid!✅
 
 Krav för väl godkänt:
-1.Alla punkter för godkänt är uppfyllda
-2.Resursen i ert API skall även ha endpoints för PUT, DELETE och GET för en entitet
+1.Alla punkter för godkänt är uppfyllda✅
+2.Resursen i ert API skall även ha endpoints för PUT, DELETE och GET för en entitet✅
 
 För att köra igång projektet:
 
@@ -49,7 +49,7 @@ För att köra/installera REACT:
 
 Instruktioner: 
 1.För att GET aktiviteter så bör man klicka på fetch activities.
-2.För att hämta en sparad aktivitet från listan så bör man välja vilken dag sedan hämta.
+2.För att hämta en sparad random aktivitet från listan så bör man välja vilken dag sedan hämta.
 För att POSTa något så bör man skriva en aktivitet först sedan trycka på post.
 För att PUTa så får man klicka på en aktivitet sedan PUT.
 För att DELETa något så får klicka på en aktivitet sedan DELETE.
