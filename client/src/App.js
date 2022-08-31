@@ -16,7 +16,6 @@ function App() {
     fetch('http://localhost:3000/weekdays')
     .then(res => res.json())
     .then(data => setWeek(data))
-
   }, [])
 
 
@@ -89,7 +88,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">  </header>
-      <h1>Random Activities Generator</h1>
+      <h1>Random Activities Generator for bored peoples</h1>
       <Activity 
         week={week}
         // id 

@@ -1,10 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Table from "react-bootstrap/Table";
 
 const Activity = ({ week, activityId, setActivity, activity, setSelectedDay, setUpdateActivity, postActivity, putActivity, fetchIds, weekId, deleteActivity,updateActivity}) => {
-
-
-
 
 
   const findSpecificActivity = () => {
@@ -18,18 +15,18 @@ const Activity = ({ week, activityId, setActivity, activity, setSelectedDay, set
       {activityId ? (
         <>
         <input onChange={e =>setUpdateActivity(e.target.value)} placeholder={findSpecificActivity()} value={updateActivity}/>
-      
-        <button onClick={putActivity}>PUT</button>
-        <button onClick={deleteActivity}>DELETE</button>
+        <button style={{backgroundColor: 'red'}} onClick={deleteActivity}>DELETE</button>
         </>
       ) : (
         <>
         <input disabled size="lg" placeholder="Select an activity!" />
-        <button disabled onClick={putActivity}>PUT</button>
         <button disabled onClick={deleteActivity}>DELETE</button>
         </>
       )}
-        
+        {
+          updateActivity.length > 0 ? <button onClick={putActivity}>PUT</button>
+          : <button disabled onClick={putActivity}>PUT</button>
+        }
       
 
       {/*POST */}
@@ -44,11 +41,9 @@ const Activity = ({ week, activityId, setActivity, activity, setSelectedDay, set
           }
         </select>
       
-
-
       <Table striped bordered hover variant="dark">
         <thead>
-          <tr>
+          <tr >
             {week &&
               week.map((item) => <th key={item.id}>{item.weekday}</th>)
               }
@@ -60,7 +55,7 @@ const Activity = ({ week, activityId, setActivity, activity, setSelectedDay, set
               week.map((item) => {
                 return (
       
-                  <td key={item.id} style={{fontSize: '11px'}}>
+                  <td key={item.id} style={{fontSize: '15px', cursor:"pointer"}}>
                         {item.activities.map(itemB => {
                           return (
                             <p onClick={() => fetchIds(item.id, itemB.id)} style={{border:'1px solid white', padding:'10px'}} key={itemB.id}>{itemB.activity}</p>
@@ -69,17 +64,12 @@ const Activity = ({ week, activityId, setActivity, activity, setSelectedDay, set
                             )
                         })}
 
-                      </td>  
-              
-                  
+                      </td>        
                 );
               })}
           </tr>
- 
         </tbody>
       </Table>
-
-
     </div>
   );
 };

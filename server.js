@@ -8,6 +8,7 @@ import cors from 'cors'
 const app = express()
 const port = 3000
 app.use(cors())
+
 let week = [
 
     {
@@ -48,19 +49,7 @@ let week = [
 
 ]
 
-let dataApi;
-let dataApi2 = [];
-
-
-const pushData = (value) => {
-    const dayId = week.findIndex(element => element.weekday === value)
-
-
-    week[dayId].activities.push({
-        activity: dataApi.activity,
-        key: nanoid()
-})
-}
+let dataApi = [];
 
 
 
@@ -72,7 +61,6 @@ app.use(express.static("client"))
 
 
 app.get('/weekdays', (req, res) => {
-    
     return res.send(week)
 })
 
@@ -80,10 +68,10 @@ app.get('/weekdays', (req, res) => {
 
 app.get('/data/:value', (req, res) => {
 
-    const randomDataIndex = Math.floor(Math.random() * dataApi2.length);
+    const randomDataIndex = Math.floor(Math.random() * dataApi.length);
     const findWeekdayIndex = week.findIndex(el => el.weekday === req.params.value)
 
-    week[findWeekdayIndex].activities.push({activity: dataApi2[randomDataIndex].activity, id: nanoid()})
+    week[findWeekdayIndex].activities.push({activity: dataApi[randomDataIndex].activity, id: nanoid()})
         res.json(week)
 
 })
@@ -95,38 +83,44 @@ app.put('/update', (req, res) => {
     res.json(week)
 })
 
-//bug
-app.get('/multiple', (req, res) => {
-    week.map( () => { 
-        return getApiRequest()
-    })
-    
-    setTimeout(() => {
-        loopSaveMultipleData()
-        res.json(week)
-        }, 500)
 
+app.get('/multiple', async (req, res) => {
+    await Promise.all(week.map(async () => { 
+        await getApiRequest()
+    }))
+
+    await loopSavedMultipleData()
+        res.json(week)
 })
 
 const getApiRequest =  async () => {
+    try {
+    
         const response = await axios.get('http://www.boredapi.com/api/activity')
-            if (response) {
-                dataApi2.push({
-                    activity: response.data.activity,
-                    id: nanoid()
-                })
-            }
-
+        if (response) {
+            dataApi.push({
+                activity: response.data.activity,
+                id: nanoid()
+            })
+        }
+        
+        
+    } catch (err) {
+    
+    }
+    
 }
 
 
-const loopSaveMultipleData = () => {
+const loopSavedMultipleData = async () => {
+
         week.map((item, index) => { 
             return item.activities.splice(0, item.activities.length,{
-                activity: dataApi2[index]?.activity,
+                activity: dataApi[Math.floor(Math.random() * dataApi.length)]?.activity,
                 id: nanoid()
             })
         })
+
 }
 
 app.post('/post', (req, res) => {
@@ -145,10 +139,8 @@ app.post('/post', (req, res) => {
 app.delete('/delete/:id', (req, res)=>{
 
     try {
-    //finds weekday id
     const weekdayId = week.find(el => el.activities.find(e => e.id === req.params.id)).id
     const weekdayIndex = week.findIndex(el => el.id === weekdayId)
-    //finds weekday's activity id
     const activityIndex = week.find(el => el.id === weekdayId).activities.findIndex(e => e.id === req.params.id)
 
     week[weekdayIndex].activities.splice(activityIndex, 1)
@@ -161,4 +153,3 @@ app.delete('/delete/:id', (req, res)=>{
 })
 
 app.listen(port, () => console.log("App is running on port " + port))
-
