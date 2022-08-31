@@ -14,6 +14,7 @@ Om du vill kombinera ditt anrop till externt API med ditt egna API kan du prata 
 Ni väljer sedan själva om ni vill använda en utökad utvecklings-stack i projektet, notera att detta inte är ett krav. 
 Exempel på ramverk ni kan lägga till i er stack är: Typescript, React, Vue, Angular, mm.
 Låt kreativiteten flöda! För att bli godkänd på den här uppgiften MÅSTE du använda GIT och GitHub.
+
 Inlämningen sker som vanligt via It’s Learning där du ska zippa ihop din projektmapp. I projektmappen ska det finnas (utöver all kod) en README.md fil som innehåller en titel, beskrivning av uppgiften och vad som krävs för att bygga och starta projektet, samt en länk till GitHub repot. Notera att om instruktioner för hur projektet byggs och startas inte finns eller om instruktionerna är felaktiga kan uppgiften komma att bli underkänd.Läs noga igenom hela uppgiftsbeskrivningen innan du börjar.
 
 Krav för godkänt:
@@ -50,7 +51,7 @@ Instruktioner:
 1.För att GET aktiviteter så bör man klicka på fetch activities.
 2.För att hämta en sparad random aktivitet från listan så bör man välja vilken dag sedan hämta.
 För att POSTa något så bör man skriva en aktivitet först sedan trycka på post.
-För att PUTa så får man klicka på en aktivitet sedan PUT.
+För att PUTa så får man klicka på en aktivitet sedan skriva den nya aktiviteten sedan trycka på PUT.
 För att DELETa något så får klicka på en aktivitet sedan DELETE.
 
 
