@@ -31,16 +31,15 @@ Krav för väl godkänt:
 2.Resursen i ert API skall även ha endpoints för PUT, DELETE och GET för en entitet✅
 
 För att köra igång projektet:
-
+Starta terminal och skriv in följande:
 
 1.npm i
 2.npm start  
 
 
-Sedan i express terminal så kör du: npm start     för att köra i gång projektet
 
 För att köra/installera REACT:
-
+starta en ny terminal ruta och skriv in följande(OBS att react ska köra en annan port):
 1.cd client
 2.npm i 
 3.npm start
